@@ -1,0 +1,11 @@
+void 	information();
+int 	client(int sock_fd);
+int 	deal_server(int sock_fd);
+void 	client_ls(int sock_fd, char *buf, char file[][256]);
+void 	show_ls(char filename[][256]);
+void 	client_get(int sock_fd, char *buf, char file[][256]);
+void	client_put(int sock_fd, char *buf, char *file);
+void 	client_my_put(int sock_fd, char *buf, char *file);
+int  	client_my_get(int sock_fd, char *buf, char *file);
+void 	client_cd(int sock_fd, char *name);
+void 	my_scanf(char *string);
