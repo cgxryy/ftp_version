@@ -10,7 +10,7 @@ void left_batch(char *string, char *batch)
 
 	while (*move != '\0')
 	      move++;
-	while (*move != '.')
+	while (*move != '.' && move != string)
 	      move--;
 	strcpy(batch, move);
 }

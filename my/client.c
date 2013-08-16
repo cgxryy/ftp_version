@@ -216,7 +216,8 @@ void show_ls(char filename[][256])
 	int  	maxlen = 60;
 	int  	nowlen = 0;
 	int  	i = 0,linemax = 0,j;
-
+	char 	*move;
+	
 	maxlen = strlen(filename[i]);
 						
 	while ( filename[i][0] != '\0')
@@ -232,10 +233,22 @@ void show_ls(char filename[][256])
 	while ( filename[i][0] != '\0')
 	{
 		nowlen = strlen(filename[i]);
-		if ((linemax + 2 ) > 120)
+		if ((linemax + 2 ) > 60)
 		{
 			printf("\n");
-			printf("%s",filename[i]);
+			move = filename[i];
+			while (*move != '\0')
+			      move++;
+			while (*move != '.' && move != filename[i])
+			      move--;
+			if (strcmp(filename[i], move) != 0 && strcmp((move-1), "..") != 0)
+				printf("%s",filename[i]);
+			else 	
+			{
+				printf("\033[40;34m\033[5m");
+				printf("%s", filename[i]);
+				printf("\033[0m");
+			}
 			for ( j = 0; j < maxlen - nowlen + 2; j++)
 			     printf(" ");
 			linemax = maxlen;
@@ -243,7 +256,19 @@ void show_ls(char filename[][256])
 		}
 		else
 		{      
-			printf("%s",filename[i]);
+			move = filename[i];
+			while (*move != '\0')
+			      move++;
+			while (*move != '.' && move != filename[i])
+			      move--;
+			if (strcmp(filename[i], move) != 0 && strcmp((move-1), "..") != 0)
+				printf("%s",filename[i]);
+			else 	
+			{
+				printf("\033[40;34m\033[5m");
+				printf("%s", filename[i]);
+				printf("\033[0m");
+			}
 			for ( j = 0; j < maxlen - nowlen + 2; j++)
 				   printf(" ");
 			linemax += (maxlen + 2);

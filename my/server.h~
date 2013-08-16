@@ -14,5 +14,4 @@ void 	match_batch(int client_fd, char batch[][10], char *cmd_path);
 int 	find_batch(char batch[][10], char file[]);
 void 	sys_log(struct sockaddr_in *cli_addr, unsigned int cmd_num, int flag);
 void 	log_err(char *string,int line);
-int  	lock_test(int fd, struct flock *lock);
-int  	lock_set(int fd, struct flock *lock);
+
