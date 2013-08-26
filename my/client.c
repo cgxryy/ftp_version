@@ -461,8 +461,17 @@ void client_my_put(int sock_fd, char *buf, char *file)
 void client_cd(int sock_fd, char *name)
 {
 	int 	ret;
+	unsigned short  flag;
 
-	ret = recv(sock_fd, name, 256, 0);
-	if (ret == -1)
-	      my_err("cd recv", __LINE__);
+	ret = recv(sock_fd, (char*)&flag, sizeof(unsigned short), 0);
+	if (ret < sizeof(unsigned short))
+	      my_err("recv ",__LINE__);
+	flag = ntohs(flag);
+	if (flag == 1)
+	{      
+		ret = recv(sock_fd, name, 256, 0);
+		if (ret == -1)
+		      my_err("cd recv", __LINE__);
+
+	}
 }

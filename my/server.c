@@ -285,6 +285,7 @@ int command_cd(int client_fd, char *file, char *cmd_path)
 	char 	now[256];
 	char 	cd[256];
 	char 	name[256];//传给客户端用来改命令行显示
+	unsigned short 	flag;
 
 	strcpy(cd, cmd_path);
 		
@@ -314,10 +315,18 @@ int command_cd(int client_fd, char *file, char *cmd_path)
 	if (ret == -1)
 	{ 
 		printf("没有这个目录，无法切换...\n");
+		flag = 0;
+		flag = htons(flag);
+		send(client_fd, (char*)&flag, sizeof(unsigned short), 0);
 		return 0;
 	}
 	else
+	{
 	     	chdir(now);
+		flag = 1;
+		flag = htons(flag);
+		send(client_fd, (char*)&flag, sizeof(unsigned short ), 0);
+	}
 
 	find_cd(cd, name);
 	ret = send(client_fd, name, 256, 0);
@@ -614,7 +623,7 @@ void my_put(int client_fd, char *file, char *path, char *cmd_path)
 	if (receive == NULL)
 	      log_err("getcwd", __LINE__);
 	
-	//确定工作路径,1表示在changgong为根的根目录，0表示处理过的目录
+	//确定储存路径,1表示在changgong为根的根目录，0表示处理过的目录
 	receive = file;
 	while (*receive != '\0')
 	      receive++;
@@ -628,8 +637,8 @@ void my_put(int client_fd, char *file, char *path, char *cmd_path)
 		}
 	}
 
-	receive--;
-	if (sign == 0)
+	receive++;
+	if (sign == 1)
 	      chdir("/home/chang/changgong/none");
 	else if (strcmp(receive, "mp4") == 0)
 	      chdir("/home/chang/changgong/mp4");
